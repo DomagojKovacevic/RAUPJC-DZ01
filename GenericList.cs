@@ -4,33 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace ListOfIntegers
 {
-
-    public class IntegerList : IIntegerList
+    public class GenericList<X> : IGenericList<X>
     {
-        private int[] _internalStorage;
+        private X[] _internalStorage;
         int ArrayIndex = 0;
 
-        public IntegerList()
+        public GenericList()
         {
 
-            this._internalStorage = new int[4];
+            this._internalStorage = new X[4];
         }
 
-        public IntegerList(int initialSize)
+        public GenericList(int initialSize)
         {
             if (initialSize < 1) Console.Write("Insert a bigger number");
-            if (initialSize > 1) this._internalStorage = new int[initialSize];
+            if (initialSize > 1) this._internalStorage = new X[initialSize];
         }
 
-        //implementacija ResizeArray metode
-        public Array ResizeArray(int[] oldArray, int newArrayLenght)
+        //ResizeArray
+        public Array ResizeArray(X[] oldArray, int newArrayLenght)
         {
             int i;
             int oldArraySize = oldArray.Length;
-            int[] newArray = new int[newArrayLenght];
+            X[] newArray = new X[newArrayLenght];
             for (i = 0; i < oldArray.Length; i++)
             {
                 newArray[i] = oldArray[i];
@@ -39,26 +37,26 @@ namespace ListOfIntegers
         }
 
         //implementacija Add metode
-        public void Add(int item)
+        public void Add(X item)
         {
             if (ArrayIndex == _internalStorage.Length)
             {
-                _internalStorage = (int[])ResizeArray(_internalStorage, _internalStorage.Length * 2);
+                _internalStorage = (X[])ResizeArray(_internalStorage, _internalStorage.Length * 2);
             }
             _internalStorage[ArrayIndex] = item;
             ArrayIndex++;
         }
 
         //implementacija Remove metode
-        public bool Remove(int item)
+        public bool Remove(X item)
         {
             int i = 0;
             int RemoveIndex = -1;
-            while((_internalStorage[i] != item) && (i < _internalStorage.Length-1))
+            while ((!EqualityComparer<X>.Default.Equals(_internalStorage[i], item)) && (i < _internalStorage.Length - 1))
             {
                 i++;
             }
-            if (_internalStorage[i] == item) RemoveIndex = i;
+            if (EqualityComparer<X>.Default.Equals(_internalStorage[i], item)) RemoveIndex = i;
             if (RemoveIndex != -1)
             {
                 for (i = RemoveIndex; i < _internalStorage.Length - 2; i++)
@@ -92,7 +90,7 @@ namespace ListOfIntegers
         }
 
         //Implementacija GetElement metode
-        public int GetElement(int index)
+        public X GetElement(int index)
         {
             if (index < 0 || index >= _internalStorage.Length)
                 throw new IndexOutOfRangeException();
@@ -101,12 +99,12 @@ namespace ListOfIntegers
         }
 
         //implementacija IndexOf metode
-        public int IndexOf(int item)
+        public int IndexOf(X item)
         {
             int i = 0;
             do
             {
-                if (_internalStorage[i] == item)
+                if (EqualityComparer<X>.Default.Equals(_internalStorage[i], item))
                     return i;
                 i++;
             } while (i < _internalStorage.Length);
@@ -131,12 +129,12 @@ namespace ListOfIntegers
         }
 
         //implementacija Contains metode
-        public bool Contains(int item)
+        public bool Contains(X item)
         {
             int i = 0;
             do
             {
-                if (_internalStorage[i] == item)
+                if (EqualityComparer<X>.Default.Equals(_internalStorage[i], item))
                     return true;
                 i++;
             } while (i < _internalStorage.Length);
@@ -144,21 +142,7 @@ namespace ListOfIntegers
         }
 
 
-        //testna aplikacija
-        public void ListExample(IIntegerList listOfIntegers)
-        {
-            listOfIntegers.Add(1); // [1]
-            listOfIntegers.Add(2); // [1 ,2]
-            listOfIntegers.Add(3); // [1 ,2 ,3]
-            listOfIntegers.Add(4); // [1 ,2 ,3 ,4]
-            listOfIntegers.Add(5); // [1 ,2 ,3 ,4 ,5]
-            listOfIntegers.RemoveAt(0); // [2 ,3 ,4 ,5]
-            listOfIntegers.Remove(5); // [2, 3, 4]
-            Console.WriteLine ( listOfIntegers.Count ) ; // 3
-            Console.WriteLine ( listOfIntegers.Remove (100) ) ; // false
-            Console.WriteLine ( listOfIntegers.RemoveAt (5) ) ; // false
-            listOfIntegers.Clear () ; // []
-            Console.WriteLine ( listOfIntegers.Count ) ; // 0
-        }
+
+
     }
 }
