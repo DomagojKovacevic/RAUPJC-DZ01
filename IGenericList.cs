@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ListOfIntegers
 {
-    public interface IGenericList<X>
+    public interface IGenericList<X> : IEnumerable<X>
     {
         /// <summary >
         /// Adds an item to the collection .
@@ -45,4 +45,4 @@ namespace ListOfIntegers
         bool Contains(X item);
     }
 }
-       
+       

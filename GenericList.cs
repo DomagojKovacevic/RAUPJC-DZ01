@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -124,7 +125,7 @@ namespace ListOfIntegers
         public void Clear()
         {
             for (int i = 0; i < _internalStorage.Length - 1; i++)
-                _internalStorage[i] = 0;
+                _internalStorage[i] = default(X);
             ArrayIndex = 0;
         }
 
@@ -139,6 +140,16 @@ namespace ListOfIntegers
                 i++;
             } while (i < _internalStorage.Length);
             return false;
+        }
+
+        // IEnumerable <X> implementation
+        public IEnumerator<X> GetEnumerator()
+        {
+            return new GenericListEnumerator<X>(this);
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
 
